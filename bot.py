@@ -139,7 +139,7 @@ app.add_handler(conv_handler)
 # تنظیم Webhook با Flask
 flask_app = Flask(__name__)
 
-@app.route("/", methods=["POST"])
+@flask_app.route("/", methods=["POST"])
 def webhook():
     update = Update.de_json(request.get_json(force=True), app.bot)
     asyncio.run(app.process_update(update))
