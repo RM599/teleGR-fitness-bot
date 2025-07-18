@@ -1,6 +1,5 @@
 import os
 import asyncio
-from flask import Flask, request
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     ApplicationBuilder, CommandHandler, CallbackQueryHandler,
@@ -136,15 +135,6 @@ conv_handler = ConversationHandler(
 
 app.add_handler(conv_handler)
 
-# تنظیم Webhook با Flask
-flask_app = Flask(__name__)
-
-@flask_app.route("/", methods=["POST"])
-def webhook():
-    update = Update.de_json(request.get_json(force=True), app.bot)
-    asyncio.run(app.process_update(update))
-    return "ok"
-
+# اجرای بات با polling
 if __name__ == "__main__":
-    app.bot.set_webhook(url="https://telegram-fitness-bot.onrender.com")
-    flask_app.run(host="0.0.0.0", port=10000)
+    app.run_polling()
